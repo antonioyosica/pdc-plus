@@ -1,6 +1,7 @@
 @extends('layouts.principal')
 @section('css')
 <style type="text/css">
+
 </style>
 @endsection
 
@@ -12,180 +13,22 @@
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area">
                         <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">page you may like</h4>
+                        <div class="card widget-item" id="agenteSugeridosCard">
+                            <h4 class="widget-title">agentes sugeridos</h4>
                             <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-33.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Travel The World</a></h3>
-                                            <p class="list-subtitle"><a href="#">adventure</a></p>
-                                        </div>
-                                        <button class="like-button active">
-                                            <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-30.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Foodcort Nirala</a></h3>
-                                            <p class="list-subtitle"><a href="#">food</a></p>
-                                        </div>
-                                        <button class="like-button">
-                                            <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-5.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Rolin Theitar</a></h3>
-                                            <p class="list-subtitle"><a href="#">drama</a></p>
-                                        </div>
-                                        <button class="like-button">
-                                            <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-29.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Active Mind</a></h3>
-                                            <p class="list-subtitle"><a href="#">fitness</a></p>
-                                        </div>
-                                        <button class="like-button">
-                                            <img class="heart" src="assets/images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="assets/images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
+                                <ul class="like-page-list-wrapper" id="agenteSugeridos">
+                                    
                                 </ul>
                             </div>
                         </div>
                         <!-- widget single item end -->
 
                         <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">latest top news</h4>
+                        <div class="card widget-item" id="pedidosLigacaoCard">
+                            <h4 class="widget-title" style="text-transform:none;">Pedidos de Ligação</h4>
                             <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-28.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">2 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-31.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">20 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-27.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">30 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-34.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">40 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="assets/images/profile/profile-small-32.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">39 min ago</p>
-                                        </div>
-                                    </li>
+                                <ul class="like-page-list-wrapper" id="pedidosLigacao">
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -213,7 +56,7 @@
                                 	{{ csrf_field() }}
                                 	<input type="hidden" name="id" value="{{$agente->id}}">
                                 	<input type="hidden" name="permissao" value="{{$agente->permissao_id}}">
-                                    <textarea name="conteudo" class="share-text-field" aria-disabled="true" placeholder="O que está em sua mente?" data-toggle="modal" data-target="#modalPost" id="email"></textarea>
+                                    <textarea name="conteudo" class="share-text-field" aria-disabled="true" placeholder="Partilhe as suas ideias..." data-toggle="modal" data-target="#modalPost" id="email"></textarea> 
                                     <button class="btn-share" type="submit">Publicar</button>
                                 </form>
                             </div>
@@ -221,16 +64,33 @@
 
                             <!-- Modal start -->
                             <form class="modal fade" id="modalPost" aria-labelledby="modalPost" data-backdrop="static" style="background-color: rgba(0,0,0,.60);height:100vh;">
+                                {{ csrf_field() }}
                                 <div class="modal-dialog">
                                     <div class="modal-content" style="border-radius:0;">
                                         <div class="modal-header" style="background-color:#dc4734;border-top-left-radius:0;border-top-right-radius:0;">
-                                            <h5 class="modal-title w-100 text-center text-white">O que está em sua mente?</h5>
+                                            <h5 class="modal-title w-100 text-center text-white">Partilhe as suas ideias!</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body custom-scroll">
+                                        <div class="modal-body">
                                             <textarea name="share" class="share-field-big custom-scroll" placeholder="Partilha o que está em sua mente com as pessoas em sua vida..."></textarea>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <select class="nice-select" name="sortby">
+                                                        <option value="trending">Gender</option>
+                                                        <option value="sales">Male</option>
+                                                        <option value="sales">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <select class="nice-select" name="sortby">
+                                                        <option value="trending">Age</option>
+                                                        <option value="sales">18+</option>
+                                                        <option value="sales">18-</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                         	<h6 class="author" style="margin-left:0;margin-right:auto;"><a href="#"><i class="flaticon-unlock"></i>Sair</a></h6>
@@ -250,7 +110,6 @@
                     	
                     </div>
                     <!-- post status end -->
-
                 </div>
 
                 <div class="col-lg-3 order-3">
@@ -515,14 +374,31 @@
 		return dataTempo;
 	}
 
+    function pedirLigacao(agente_id, tipo) {
+        $.ajax({
+            url:"{{ route('pedir') }}",
+            method: 'post',
+            data: {'agente_origem': '{{ $agente->id }}', 'agente_destino': agente_id, 'tipo': tipo, },
+            success: function (response) {
+                if(response.code == 200){
+                    carregarSugestaoAgente();
+                }
+            },
+            error: function() {
+                toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao pedir ligação!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+            }
+        });
+    }
+
 	function carregarPublicacao(){
 		let posts = '';
 		$.ajax({
             url: "{{ route('publicacao') }}",
             method: 'get',
+            data: {'token': '{{ \Crypt::encrypt($agente->id) }}'},
             success: function (response) {
                 $.each(response.publicacao, function (key, value) {
-                    posts += '<div class="card"><div class="post-title d-flex align-items-center"><div class="profile-thumb"> <a href="#"> <figure class="profile-thumb-middle"> <img src="assets/images/profile/profile-small-9.jpg" alt="profile picture"> </figure> </a> </div><div class="posted-author"> <h6 class="author"><a href="#">'+value.nome_completo+'</a></h6> <span class="post-time">'+tempoPublicacao(new Date(Date.parse(value.data_criacao)))+'</span> </div> <div class="post-settings-bar"> <span></span> <span></span> <span></span> <div class="post-settings arrow-shape"> <ul> <li><button>copy link to adda</button></li> <li><button>edit post</button></li> <li><button>embed adda</button></li> </ul> </div> </div> </div><div class="post-content"> <p class="post-desc pb-0">'+value.conteudo+'</p> <div class="post-meta"> <button class="post-meta-like"> <i class="bi bi-heart-beat"></i> <span>You and 206 people like this</span> <strong>206</strong> </button> <ul class="comment-share-meta"> <li> <button class="post-comment"> <i class="bi bi-chat-bubble"></i> <span>41</span> </button> </li> <li> <button class="post-share"> <i class="bi bi-share"></i> <span>07</span> </button> </li> </ul> </div> </div> </div>';
+                    posts += '<div class="card"><div class="post-title d-flex align-items-center"><div class="profile-thumb"> <a href="#"> <figure class="profile-thumb-middle"> <img src="assets/images/profile/profile-small-9.jpg" alt="profile picture"> </figure> </a> </div><div class="posted-author"> <h6 class="author"><a href="#">'+value.nome_completo+'</a></h6> <span class="post-time">'+tempoPublicacao(new Date(Date.parse(value.data_criacao)))+'</span> </div> <div class="post-settings-bar"> <span></span> <span></span> <span></span> <div class="post-settings arrow-shape"> <ul> <li><button>copy link to adda</button></li> <li><button>edit post</button></li> <li><button>embed adda</button></li> </ul> </div> </div> </div><div class="post-content"> <p class="post-desc pb-0">'+value.conteudo+'</p> <div class="post-meta"> <button class="post-meta-like"> <i class="bi bi-heart-beat"></i> <span>You and 206 people like this</span> <strong>206</strong> </button> <ul class="comment-share-meta"> <li> <button class="post-comment"> <i class="bi bi-hand-thumbs-up"></i> <span>41</span> </button> </li> <li> <button class="post-share"> <i class="bi bi-hand-thumbs-down"></i> <span>07</span> </button> </li> </ul> </div> </div> </div>';
                   
                 });
 
@@ -531,12 +407,62 @@
         });
 	}
 
+    function carregarSugestaoAgente(){
+        let sugestoes = '';
+        $.ajax({
+            url: "{{ route('sugestao') }}",
+            method: 'get',
+            data: {
+                'uToken': '{{ \Crypt::encrypt($agente->id) }}',
+                'cToken': '{{ \Crypt::encrypt($agente->cidade_id) }}'
+            },
+            success: function (response) {
+                if ((response.agente).length === 0){
+                    $('#agenteSugeridosCard').css('display', 'none');
+                }else{
+                    $('#agenteSugeridosCard').css('display', 'block');
+                    $.each(response.agente, function (key, value) {
+                        sugestoes += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')">Pedir ligação</a></p></div></li>';
+                    });
+
+                    $('#agenteSugeridos').html(sugestoes);
+                }
+            }
+        });
+    }
+
+    function carregarPedidosLigacao(){
+        let pedidos = '';
+        $.ajax({
+            url: "{{ route('pedido') }}",
+            method: 'get',
+            data: {'token': '{{ \Crypt::encrypt($agente->id) }}'},
+            success: function (response) {
+                console.log(response.agente)
+                if ((response.agente).length === 0){
+                    $('#pedidosLigacaoCard').css('display', 'none');
+                }else{
+                    $('#pedidosLigacaoCard').css('display', 'block');
+                    $.each(response.agente, function (key, value) {
+                        pedidos += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')">Aceitar</a><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')" style="float:right;">Rejeitar</a></p></div></li>';
+                    });
+
+                    $('#pedidosLigacao').html(pedidos);
+                }
+            }
+        });
+    }
+
 	$(function(){
 		carregarPublicacao();
+        carregarSugestaoAgente();
+        carregarPedidosLigacao();
 	});
 
 	$(document).ready(function(){
-		setInterval(carregarPublicacao, 10000);
+        setInterval(carregarPublicacao, 3500);
+        setInterval(carregarSugestaoAgente, 1000);
+		setInterval(carregarPedidosLigacao, 1000);
 
 	    $("form#post").submit(function (e) {
             e.preventDefault();

@@ -39,7 +39,7 @@ class AutenticacaoController extends Controller
             } else {
                 return response()->json([
                     'code' => 500,
-                    'msg' => 'Por favor, verifique-a e tente novamente.*Credenciais incorrecta!'
+                    'msg' => 'Por favor, verifique-a e tente novamente.*Credencial incorrecta!'
                 ], 200);
             }
         }
@@ -57,7 +57,7 @@ class AutenticacaoController extends Controller
         } else {
             return response()->json([
                 'code' => 500,
-                'msg' => 'Por favor, verifique-a e tente novamente.*Credenciais incorrecta!'
+                'msg' => 'Por favor, verifique-a e tente novamente.*Credencial incorrecta!'
             ], 200);
         }
     }

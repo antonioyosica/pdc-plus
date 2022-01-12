@@ -1758,8 +1758,8 @@ textarea:focus {
 .post-comment span,
 .post-share span {
   color: #666666;
-  vertical-align: text-bottom;
-  padding-left: 8px;
+  vertical-align:middle;
+  padding-left: 4px;
 }
 
 .post-meta-like:hover i,
@@ -2176,7 +2176,6 @@ textarea:focus {
   font-size: 12px;
   font-weight: 400;
   color: #666666;
-  text-transform: capitalize;
 }
 
 .list-subtitle a {
@@ -2184,7 +2183,8 @@ textarea:focus {
 }
 
 .list-subtitle a:hover {
-  color: #dc4734;
+  color: #dc4734 !important;
+  cursor: pointer !important;
 }
 
 .unorder-list {

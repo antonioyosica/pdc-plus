@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Agente;
+use App\Models\Ligacao;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class AgenteController extends Controller
 {
@@ -102,4 +104,63 @@ class AgenteController extends Controller
             ], 200);
         }
     }
+
+    public function publicacao(){
+        return response()->json([
+            'publicacao' => DB::select(DB::raw("SELECT p.id, p.conteudo,p.estado, p.data_criacao, a.nome_completo, a.username, a.foto_perfil, p.permissao_id FROM agente a, publicacao p WHERE a.id=p.agente_id ORDER BY p.id DESC"))
+        ], 200)->header('Content-Type', 'application/json');
+    }
+
+    public function sugestaoCidade(Request $request)
+    {
+        if (!empty($request->all())) {
+            $user_id = Crypt::decrypt($request->uToken);
+            $cidade_id = Crypt::decrypt($request->cToken);
+
+            return response()->json([
+                'agente' => DB::select(DB::raw("SELECT a.id, a.nome_completo, a.username, a.foto_perfil, a.tipo FROM agente a WHERE a.id<>$user_id AND a.cidade_id=$cidade_id AND a.estado=1 AND (a.id NOT IN (SELECT agente_origem FROM ligacao WHERE agente_destino=$user_id) AND a.id NOT IN (SELECT agente_destino FROM ligacao WHERE agente_origem=$user_id))"))
+            ], 200)->header('Content-Type', 'application/json');
+        }
+
+        return response()->json([
+            'code' => 401
+        ], 200)->header('Content-Type', 'application/json');
+    }
+
+    public function pedirLigacao(Request $request)
+    {
+        if (!empty($request->all())) {
+            $ligacao = new Ligacao();
+            $ligacao->agente_origem = $request->agente_origem;
+            $ligacao->agente_destino = $request->agente_destino;
+            if($request->tipo == 'Organizacional'){
+                $ligacao->estado = 1;
+            }
+            $ligacao->save();
+
+            return response()->json([
+                'code' => 200
+            ], 200)->header('Content-Type', 'application/json');
+        }
+
+        return response()->json([
+            'code' => 401
+        ], 200)->header('Content-Type', 'application/json');
+    }
+
+    public function pedidoLigacao(Request $request)
+    {
+        if (!empty($request->all())) {
+            $user_id = Crypt::decrypt($request->token);
+
+            return response()->json([
+                'agente' => DB::select(DB::raw("SELECT id, nome_completo, username, foto_perfil, tipo FROM agente WHERE id<>$user_id AND id IN (SELECT agente_origem FROM ligacao WHERE estado=0)"))
+            ], 200)->header('Content-Type', 'application/json');
+        }
+
+        return response()->json([
+            'code' => 401
+        ], 200)->header('Content-Type', 'application/json');
+    }
+
 }

@@ -29,16 +29,22 @@ Route::get('/', function () {
             'cidades' => Cidade::get()
         ]);
     }
-});
+})->name('home');
 Route::post('/entrar', [AutenticacaoController::class, 'autenticar'])->name('entrar');
 Route::post('/agente/criar', [AgenteController::class, 'registar'])->name('criar_agente');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/sair', [AutenticacaoController::class, 'terminar_sessao'])->name('sair');
     Route::get('/inicio', [InicioController::class, 'inicio'])->name('inicio');
-    Route::get('/publicacao', [InicioController::class, 'publicacao'])->name('publicacao');
-    Route::post('/agente/definir/tipo', [AgenteController::class, 'definirTipo'])->name('tipo');
+
+    Route::get('/publicacao', [InicioController::class, 'publicacaoFeed'])->name('publicacao');
     Route::post('/publicacao/criar', [PublicacaoController::class, 'registarTextual'])->name('textual');
+    Route::get('/publicacao/agente', [AgenteController::class, 'publicacao'])->name('publicacao2');
+
+    Route::get('/agente/sugestao', [AgenteController::class, 'sugestaoCidade'])->name('sugestao');
+    Route::post('/agente/definir/tipo', [AgenteController::class, 'definirTipo'])->name('tipo');
+    Route::get('/agente/ligacao', [AgenteController::class, 'pedidoLigacao'])->name('pedido');
+    Route::post('/agente/ligacao/pedir', [AgenteController::class, 'pedirLigacao'])->name('pedir');
 });
 
 Route::get('/teste', function () {

@@ -15,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('')}}assets/css/vendor/bootstrap.min.css">
     <!-- Icon Font CSS -->
-    <link rel="stylesheet" href="{{asset('')}}assets/css/vendor/bicon.min.css">
+    <link rel="stylesheet" href="{{asset('')}}assets/css/vendor/bootstrap-icons.css">
     <!-- Flat Icon CSS -->
     <link rel="stylesheet" href="{{asset('')}}assets/css/vendor/flaticon.css">
     <!-- audio & video player CSS -->
@@ -34,6 +34,64 @@
     <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
     <style type="text/css">
         .nice-select .list{max-height:160px;overflow:scroll;}
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+        }
+        .component {
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+        }
+        .sh1 {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 50px 50px 0 0;
+            border-color: #dc4734 transparent transparent transparent;
+            margin: 0 auto;
+            animation: shk1 1s ease-in-out infinite normal;
+        }
+        .sh2 {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 50px 50px;
+            border-color: transparent  transparent #dddddd transparent ;
+            margin: -50px auto 0;
+            animation: shk2 1s ease-in-out infinite alternate;
+        }
+        @keyframes shk1 {
+            0% {
+            transform: rotate(-360deg);
+            }  
+
+            100% {
+            }
+        }
+
+        @keyframes shk2 {
+            0% {
+            transform: rotate(360deg);
+            }
+            100% {
+            }
+        }
+        .lt1,.lt2{
+            color: #fff;
+            text-align: center;
+            letter-spacing: 2px;
+        }
     </style>
     @yield('css')
 </head>
@@ -448,7 +506,7 @@
 
     <!-- Scroll to top start -->
     <div class="scroll-top not-visible">
-        <i class="bi bi-finger-index"></i>
+        <i class="bi bi-arrow-up"></i>
     </div>
     <!-- Scroll to Top End -->
 
@@ -943,6 +1001,14 @@
             </div>
         </div>
     </footer>
+    <div class="loader" id="sLoader" style="display:none;">
+        <div class="component">
+            <div class="sh1"></div>
+            <div class="sh2"></div>
+            <h4 class="lt1 mt-4 font-weight-light">A enviar...</h4>
+            <h6 class="lt2 font-weight-bold">Por favor, aguarde.</h6>
+        </div>
+    </div>
     <!-- footer area end -->
 
     <!-- Modal -->

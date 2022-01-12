@@ -34,6 +34,64 @@
     <link rel="stylesheet" href="{{asset('')}}assets/css/style.css">
     <style type="text/css">
         .nice-select .list{max-height:160px;overflow:scroll;}
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+        }
+        .component {
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+        }
+        .sh1 {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 50px 50px 0 0;
+            border-color: #dc4734 transparent transparent transparent;
+            margin: 0 auto;
+            animation: shk1 1s ease-in-out infinite normal;
+        }
+        .sh2 {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 50px 50px;
+            border-color: transparent  transparent #dddddd transparent ;
+            margin: -50px auto 0;
+            animation: shk2 1s ease-in-out infinite alternate;
+        }
+        @keyframes shk1 {
+            0% {
+            transform: rotate(-360deg);
+            }  
+
+            100% {
+            }
+        }
+
+        @keyframes shk2 {
+            0% {
+            transform: rotate(360deg);
+            }
+            100% {
+            }
+        }
+        .lt1,.lt2{
+            color: #fff;
+            text-align: center;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 
@@ -78,7 +136,7 @@
                         <div class="row no-gutters">
                             <div class="col-lg-6 order-2 order-lg-1">
                                 <div class="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                    <h3 class="timeline-bg-title">Vamos ver o que está a acontecer com você e seu mundo.</h3>
+                                    <h3 class="timeline-bg-title">Partilhe suas ideias!</h3>
                                 </div>
                             </div>
                             <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
@@ -123,6 +181,14 @@
             </div>
         </div>
     </main>
+    <div class="loader" id="sLoader" style="display:none;">
+        <div class="component">
+            <div class="sh1"></div>
+            <div class="sh2"></div>
+            <h4 class="lt1 mt-4 font-weight-light">A enviar...</h4>
+            <h6 class="lt2 font-weight-bold">Por favor, aguarde.</h6>
+        </div>
+    </div>
 
     <!-- JS ============================================ -->
     <!-- Modernizer JS -->
@@ -153,6 +219,10 @@
     <script src="{{asset('')}}assets/js/main.js"></script>
 
     <script type="text/javascript">
+        function pausa(tempo) {
+            return new Promise((resolve) => setTimeout(resolve, tempo));
+        }
+
         $(function () {
             
         });
@@ -168,23 +238,38 @@
 
             $("form#login").submit(function (e) {
                 e.preventDefault();
+                document.getElementById("sLoader").style.display = "block";
                 $.ajax({
                     url:"{{ route('entrar') }}",
                     method: 'post',
                     data: $('form#login').serialize(),
                     success: function (response) {
-                        console.log(response);
                         if(response.code == 400){
                             var content = (String(Object.values(response.msg)[0])).split("*");
-                            toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            });
                         }else if(response.code == 200){
                             $('form#login').each(function(){
                                 this.reset();
                             });
-                            window.location.replace("{{ route('inicio') }}");
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1200).then(() => {
+                                window.location.replace("{{ route('inicio') }}");
+                            });
                         }else{
                             var content = (String(response.msg)).split("*");
-                            toastr.error(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.error(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            });
                         }
 
 
@@ -214,13 +299,19 @@
                         } */
                     },
                     error: function() {
-                        toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao entrar!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        setTimeout(function() {
+                            document.getElementById("sLoader").style.display = "none";
+                        }, 1500);
+                        pausa(1500).then(() => {
+                            toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao entrar!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        });
                     }
                 });
             });
 
             $("form#registar").submit(function (e) {
                 e.preventDefault();
+                document.getElementById("sLoader").style.display = "block";
                 $.ajax({
                     url:"{{ route('criar_agente') }}",
                     method: 'post',
@@ -228,19 +319,40 @@
                     success: function (response) {
                         if(response.code == 400){
                             var content = (String(Object.values(response.msg)[0])).split("*");
-                            toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            });
                         }else if(response.code == 200){
                             var content = (String(response.msg)).split("*");
-                            toastr.success(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
-                            $('form#registar').each(function(){
-                                this.reset();
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.success(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                                $('form#registar').each(function(){
+                                    this.reset();
+                                });
                             });
                         }else{
-                            toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            document.getElementById("sLoader").style.display = "none";
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            });
                         }
                     },
                     error: function() {
-                        toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        setTimeout(function() {
+                            document.getElementById("sLoader").style.display = "none";
+                        }, 1500);
+                        pausa(1500).then(() => {
+                            toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        });
                     }
                 });
             });            
