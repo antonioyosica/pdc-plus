@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+Use \Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Agente;
@@ -50,6 +51,10 @@ class AutenticacaoController extends Controller
         ];
         if (Auth::attempt($credenciais, true)) {
             $agente = Auth::user();
+            DB::table('agente_estado')->where('agente_id', $agente->id)->update([
+                'estado' => true,
+                'data' => Carbon::now('Africa/Luanda')->format('Y-m-d H:i:s')
+            ]);
             return response()->json([
                 'code' => 200,
                 'info' => $agente
@@ -64,6 +69,10 @@ class AutenticacaoController extends Controller
 
     public function terminar_sessao()
     {
+        DB::table('agente_estado')->where('agente_id', Auth::user()->id)->update([
+            'estado' => false,
+            'data' => Carbon::now('Africa/Luanda')->format('Y-m-d H:i:s')
+        ]);
         Auth::logout();
         return redirect('/');
     }

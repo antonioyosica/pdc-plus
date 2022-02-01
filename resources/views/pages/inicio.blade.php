@@ -1,7 +1,10 @@
 @extends('layouts.principal')
 @section('css')
 <style type="text/css">
-
+    #listarLigacao .profile-thumb.active::before {
+        bottom: 9px !important;
+        right: -2px !important;
+    }
 </style>
 @endsection
 
@@ -28,6 +31,17 @@
                             <h4 class="widget-title" style="text-transform:none;">Pedidos de Ligação</h4>
                             <div class="widget-body">
                                 <ul class="like-page-list-wrapper" id="pedidosLigacao">
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- widget single item end -->
+
+                        <!-- widget single item start -->
+                        <div class="card widget-item" id="listarLigacaoCard">
+                            <h4 class="widget-title" style="text-transform:none;">Ligações</h4>
+                            <div class="widget-body">
+                                <ul class="like-page-list-wrapper" id="listarLigacao">
                                     
                                 </ul>
                             </div>
@@ -93,8 +107,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                        	<h6 class="author" style="margin-left:0;margin-right:auto;"><a href="#"><i class="flaticon-unlock"></i>Sair</a></h6>
-                    						<button type="button" class="post-share-btn" data-dismiss="modal">Cancelar</button>
+                                        	<h6 class="author" style="margin-left:0;margin-right:auto;"><a href="#"><i class="bi bi-cloud-upload-fill"></i>Carregar ficheiro</a></h6>
+                    						<button type="button" class="post-share-btn" onclick="discartar">Discartar</button>
                                             <button type="submit" class="post-share-btn">Publicar</button>
                                         </div>
                                     </div>
@@ -106,9 +120,7 @@
                     <!-- share box end -->
 
                     <!-- post status start -->
-                    <div id="posts">
-                    	
-                    </div>
+                    <div id="posts"></div>
                     <!-- post status end -->
                 </div>
 
@@ -317,6 +329,16 @@
 @section('js')
 <script type="text/javascript">
 	document.getElementById("inicio").className += " active";
+    $(function(){
+        carregarPublicacao();
+        carregarSugestaoAgente();
+        carregarPedidosLigacao();
+        carregarLigacoes();
+    });
+
+    function pausa(tempo) {
+        return new Promise((resolve) => setTimeout(resolve, tempo));
+    }
 
 	function tempoPublicacao(dataTempo){
 		switch(typeof dataTempo){
@@ -390,6 +412,39 @@
         });
     }
 
+    function mudarEstadoLigacao(estado, agente_origem){
+        $.ajax({
+            url:"{{ route('estado') }}",
+            method: 'post',
+            data: {'user_id': '{{ $agente->id }}', 'agente_origem': agente_origem, 'estado': estado},
+            success: function (response) {
+                if(response.code != 200){
+                    toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao executar esta operação!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                }
+            },
+            error: function() {
+                toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao executar esta operação!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+            }
+        });
+    }
+
+    function chatPrivado(id, nome, is_online){
+        $('#author-name').html(nome);
+        window.localStorage.setItem('brwsco', id);
+        if(is_online == '1'){
+            $(".live-chat-title .profile-thumb").addClass('active');
+        }
+        $('#chat-input').css('visibility', 'visible');
+        $(".chat-output-box").addClass('show');
+    }
+
+    function discartar(){
+        $('#modalPost').modal('hide');
+        $('#modalPost').each(function(){
+            this.reset();
+        });
+    }
+
 	function carregarPublicacao(){
 		let posts = '';
 		$.ajax({
@@ -422,7 +477,7 @@
                 }else{
                     $('#agenteSugeridosCard').css('display', 'block');
                     $.each(response.agente, function (key, value) {
-                        sugestoes += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')">Pedir ligação</a></p></div></li>';
+                        sugestoes += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')"><i class="bi bi-person-plus-fill"></i> Pedir ligação</a></p></div></li>';
                     });
 
                     $('#agenteSugeridos').html(sugestoes);
@@ -438,13 +493,12 @@
             method: 'get',
             data: {'token': '{{ \Crypt::encrypt($agente->id) }}'},
             success: function (response) {
-                console.log(response.agente)
                 if ((response.agente).length === 0){
                     $('#pedidosLigacaoCard').css('display', 'none');
                 }else{
                     $('#pedidosLigacaoCard').css('display', 'block');
                     $.each(response.agente, function (key, value) {
-                        pedidos += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')">Aceitar</a><a onclick="pedirLigacao('+value.id+', \''+value.tipo+'\')" style="float:right;">Rejeitar</a></p></div></li>';
+                        pedidos += '<li class="unorder-list"><div class="profile-thumb"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="mudarEstadoLigacao(1,\''+value.agente_origem+'\')"><i class="bi bi-person-check-fill"></i> Aceitar</a><a onclick="mudarEstadoLigacao(0,\''+value.agente_origem+'\')" style="float:right;"><i class="bi bi-person-x-fill"></i> Rejeitar</a></p></div></li>';
                     });
 
                     $('#pedidosLigacao').html(pedidos);
@@ -453,16 +507,43 @@
         });
     }
 
-	$(function(){
-		carregarPublicacao();
-        carregarSugestaoAgente();
-        carregarPedidosLigacao();
-	});
+    function carregarLigacoes(){
+        let ligacoes = '';
+        $.ajax({
+            url: "{{ route('ligacoes') }}",
+            method: 'get',
+            data: {'token': '{{ \Crypt::encrypt($agente->id) }}'},
+            success: function (response) {
+                if ((response.agente).length === 0){
+                    $('#listarLigacaoCard').css('display', 'none');
+                }else{
+                    $('#listarLigacaoCard').css('display', 'block');
+                    $.each(response.agente, function (key, value) {
+                        let online = '';
+                        if(value.is_online == '1'){
+                            online = 'active';
+                            if(window.localStorage.getItem('brwsco') == value.is_online){
+                                $(".live-chat-title .profile-thumb").addClass('active');
+                            }
+                        }else{
+                            if(window.localStorage.getItem('brwsco') == value.is_online){
+                                $(".live-chat-title .profile-thumb").removeClass('active');
+                            }
+                        }
+                        ligacoes += '<li class="unorder-list"><div class="profile-thumb '+online+'"><a href="#"><figure class="profile-thumb-small"><img src="assets/images/profile/profile-small-33.jpg" alt="profile picture"></figure></a></div><div class="unorder-list-info"><h3 class="list-title"><a href="#">'+value.nome_completo+'</a></h3><p class="list-subtitle"><a onclick="chatPrivado(\''+value.id+'\', \''+value.nome_completo+'\', \''+value.is_online+'\')"><i class="bi bi-chat-left-text-fill"></i> Mensagem</a></p></div></li>';
+                    });
+
+                    $('#listarLigacao').html(ligacoes);
+                }
+            }
+        });
+    }
 
 	$(document).ready(function(){
-        setInterval(carregarPublicacao, 3500);
-        setInterval(carregarSugestaoAgente, 1000);
-		setInterval(carregarPedidosLigacao, 1000);
+        setInterval(carregarPublicacao, 60000);
+        setInterval(carregarSugestaoAgente, 30000);
+        setInterval(carregarPedidosLigacao, 2500);
+		setInterval(carregarLigacoes, 5000);
 
 	    $("form#post").submit(function (e) {
             e.preventDefault();

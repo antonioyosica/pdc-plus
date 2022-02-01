@@ -147,10 +147,10 @@
                                             {{ csrf_field() }}
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input type="text" class="single-field" placeholder="E-mail" name="email">
+                                                    <input type="text" class="single-field" placeholder="E-mail" name="email" onkeyup="this.value = this.value.toLowerCase();">
                                                 </div>
                                                 <div class="col-12">
-                                                    <input type="text" class="single-field" placeholder="Nome de utilizador" name="username">
+                                                    <input type="text" class="single-field" placeholder="Nome de utilizador" name="username" onkeypress="return validarUtilizador(event);" onkeyup="this.value = this.value.toLowerCase();">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input type="password" class="single-field" placeholder="Palavra-passe" name="password">
@@ -219,6 +219,20 @@
     <script src="{{asset('')}}assets/js/main.js"></script>
 
     <script type="text/javascript">
+        function validarUtilizador(e) {
+            var keyCode = e.keyCode || e.which;
+
+            //Regex to allow only Alphabets Numbers Dash Underscore and Space
+            var pattern = /^[a-z\d\-_.]+$/i;
+
+            var isValid = pattern.test(String.fromCharCode(keyCode));
+            if (!isValid) {
+                e.preventDefault();
+            }
+
+            return true;
+        }
+
         function pausa(tempo) {
             return new Promise((resolve) => setTimeout(resolve, tempo));
         }

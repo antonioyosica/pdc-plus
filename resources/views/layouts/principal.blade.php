@@ -827,8 +827,8 @@
                             </div>
                             <div class="footer-card position-relative">
                                 <div class="live-chat-inner">
-                                    <div class="chat-text-field">
-                                        <textarea class="live-chat-field custom-scroll" placeholder="Text Message"></textarea>
+                                    <div class="chat-text-field" style="visibility:hidden;" id="chat-input">
+                                        <textarea class="live-chat-field custom-scroll" placeholder="Aa..."></textarea>
                                         <button class="chat-message-send" type="submit" value="submit">
                                             <img src="assets/images/icons/plane.png" alt="">
                                         </button>
@@ -836,7 +836,7 @@
                                     <div class="chat-output-box">
                                         <div class="live-chat-title">
                                             <!-- profile picture end -->
-                                            <div class="profile-thumb active">
+                                            <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
                                                         <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture">
@@ -845,11 +845,9 @@
                                             </div>
                                             <!-- profile picture end -->
                                             <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Robart Marloyan</a></h6>
-                                                <span class="active-pro">active now</span>
+                                                <h6 class="author" style="text-transform: none;"><a href="#" id="author-name"></a></h6>
                                             </div>
                                             <div class="live-chat-settings ml-auto">
-                                                <button class="chat-settings"><i class="flaticon-settings"></i></button>
                                                 <button class="close-btn" data-close="chat-output-box"><i class="flaticon-cross-out"></i></button>
                                             </div>
                                         </div>
@@ -1090,6 +1088,10 @@
     <script src="{{asset('')}}assets/js/main.js"></script>
 
     <script type="text/javascript">
+        function pausa(tempo) {
+            return new Promise((resolve) => setTimeout(resolve, tempo));
+        }
+
         $(function () {
             if('{{$agente->nome_completo}}'=='' && '{{$agente->tipo}}'=='' && '{{$agente->permissao_id}}'==''){
                 $('#modalAgente').modal('show');
@@ -1135,6 +1137,7 @@
 
             $("form#modalAgente").submit(function (e) {
                 e.preventDefault();
+                document.getElementById("sLoader").style.display = "block";
                 $.ajax({
                     url:"{{ route('tipo') }}",
                     method: 'post',
@@ -1142,23 +1145,49 @@
                     success: function (response) {
                         if(response.code == 400){
                             var content = (String(Object.values(response.msg)[0])).split("*");
-                            toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            });
                         }else if(response.code == 401){
                             var content = (String(response.msg)).split("*");
-                            toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.warning(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true })
+                            });
                         }else if(response.code == 200){
                             var content = (String(response.msg)).split("*");
-                            toastr.success(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
-                            $('select').val("0");
-                            $('form#modalAgente').each(function(){
-                                this.reset();
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.success(content[0], content[1], {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                                $('select').val("0");
+                                $('form#modalAgente').each(function(){
+                                    this.reset();
+                                });
+                                $('#modalAgente').modal('hide');
                             });
                         }else{
-                            toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar actualização da conta!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            setTimeout(function() {
+                                document.getElementById("sLoader").style.display = "none";
+                            }, 1500);
+                            pausa(1500).then(() => {
+                                toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar actualização da conta!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                            });
                         }
                     },
                     error: function() {
-                        toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        setTimeout(function() {
+                            document.getElementById("sLoader").style.display = "none";
+                        }, 1500);
+                        pausa(1500).then(() => {
+                            toastr.error('Por favor, tente novamente em alguns instantes. Lamentamos!', 'Erro ao efectuar o registo!', {timeOut: 6000, positionClass: 'toast-bottom-full-width', showEasing: 'swing', hideEasing: 'linear', showMethod: 'fadeIn', hideMethod: 'fadeOut', closeButton: false, preventDuplicates: true });
+                        });
                     }
                 });
             });

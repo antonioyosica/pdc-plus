@@ -982,7 +982,7 @@ textarea:focus {
 }
 
 .dropdown-title .message-btn-group button {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1;
   color: #666666;
@@ -1014,7 +1014,7 @@ textarea:focus {
 }
 
 .msg-dropdown-footer button {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1;
   color: #666666;
@@ -1067,7 +1067,7 @@ textarea:focus {
 }
 
 .dropdown-msg-list li.msg-list-item .msg-time {
-  font-size: 12px;
+  font-size: 13px;
   color: #666666;
   width: 100px;
   text-align: right;
@@ -1557,7 +1557,7 @@ textarea:focus {
 }
 
 .posted-author {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .posted-author .post-time {
@@ -1980,7 +1980,7 @@ textarea:focus {
 
 .edit-btn {
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1;
   padding: 11px 28px;
@@ -2173,9 +2173,13 @@ textarea:focus {
 }
 
 .list-subtitle {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: #666666;
+  width:100% !important;
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
 }
 
 .list-subtitle a {
@@ -2951,7 +2955,7 @@ textarea:focus {
 }
 
 .friend-list-view .add-frnd {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.8;
   color: #666666;
@@ -2966,7 +2970,7 @@ textarea:focus {
 
 @media only screen and (max-width: 575.98px) {
   .friend-list-view .posted-author {
-    margin-left: 20px;
+    margin-left: 10px;
   }
 }
 
@@ -3255,7 +3259,7 @@ textarea:focus {
 
 .friend-search-list ul li .add-frnd {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   padding-top: 5px;
   color: #666666;
   text-transform: capitalize;
@@ -3284,7 +3288,7 @@ textarea:focus {
 /*------- friend search box end -------*/
 /*------- live chat box start -------*/
 .chat-output-box {
-  bottom: calc(100% + 10px);
+  bottom: calc(100% + 0px);
   left: 0;
   width: 100%;
   background-color: #fff;
@@ -3331,7 +3335,7 @@ textarea:focus {
 }
 
 .live-chat-title .active-pro {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   color: #fff;
   text-transform: capitalize;
@@ -3415,7 +3419,7 @@ textarea:focus {
 }
 
 .message-list li.text-friends p {
-  font-size: 12px;
+  font-size: 13px;
   color: #333333;
 }
 
@@ -3428,7 +3432,7 @@ textarea:focus {
 }
 
 .message-list li.text-author p {
-  font-size: 12px;
+  font-size: 13px;
   color: #fff;
 }
 

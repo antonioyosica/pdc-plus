@@ -44,7 +44,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/agente/sugestao', [AgenteController::class, 'sugestaoCidade'])->name('sugestao');
     Route::post('/agente/definir/tipo', [AgenteController::class, 'definirTipo'])->name('tipo');
     Route::get('/agente/ligacao', [AgenteController::class, 'pedidoLigacao'])->name('pedido');
+    Route::get('/agente/ligacao/listar', [AgenteController::class, 'listarLigacao'])->name('ligacoes');
     Route::post('/agente/ligacao/pedir', [AgenteController::class, 'pedirLigacao'])->name('pedir');
+    Route::post('/agente/ligacao/estado', [AgenteController::class, 'mudarLigacao'])->name('estado');
 });
 
 Route::get('/teste', function () {

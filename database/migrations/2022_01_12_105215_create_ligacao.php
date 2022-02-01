@@ -16,6 +16,7 @@ class CreateLigacao extends Migration
         Schema::create('ligacao', function (Blueprint $table) {
             $table->unsignedBigInteger('agente_origem');
             $table->unsignedBigInteger('agente_destino');
+            $table->boolean('is_aceito')->default(false);
             $table->boolean('estado')->default(false);
             $table->dateTime('data_criacao')->useCurrent();
             $table->foreign('agente_origem')->references('id')->on('agente');

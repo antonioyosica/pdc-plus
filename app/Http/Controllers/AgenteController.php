@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+Use \Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Agente;
@@ -98,6 +99,11 @@ class AgenteController extends Controller
                 'tipo' => $request->tipo,
                 'permissao_id' => $request->permissao
             ]);
+            DB::table('agente_estado')->insert([
+                'agente_id' => $request->id,
+                'estado' => true,
+                'data' => Carbon::now('Africa/Luanda')->format('Y-m-d H:i:s')
+            ]);
             return response()->json([
                 'code' => 200,
                 'msg' => 'Partilha e conecta-se com as pessoas em sua vida.*Definições da conta actualizada!'
@@ -105,7 +111,8 @@ class AgenteController extends Controller
         }
     }
 
-    public function publicacao(){
+    public function publicacao()
+    {
         return response()->json([
             'publicacao' => DB::select(DB::raw("SELECT p.id, p.conteudo,p.estado, p.data_criacao, a.nome_completo, a.username, a.foto_perfil, p.permissao_id FROM agente a, publicacao p WHERE a.id=p.agente_id ORDER BY p.id DESC"))
         ], 200)->header('Content-Type', 'application/json');
@@ -118,7 +125,7 @@ class AgenteController extends Controller
             $cidade_id = Crypt::decrypt($request->cToken);
 
             return response()->json([
-                'agente' => DB::select(DB::raw("SELECT a.id, a.nome_completo, a.username, a.foto_perfil, a.tipo FROM agente a WHERE a.id<>$user_id AND a.cidade_id=$cidade_id AND a.estado=1 AND (a.id NOT IN (SELECT agente_origem FROM ligacao WHERE agente_destino=$user_id) AND a.id NOT IN (SELECT agente_destino FROM ligacao WHERE agente_origem=$user_id))"))
+                'agente' => DB::select(DB::raw("SELECT a.id, a.nome_completo, a.username, a.foto_perfil, a.tipo FROM agente a WHERE a.id<>$user_id AND a.nome_completo<>'' AND a.tipo<>'' AND a.permissao_id<>'' AND a.cidade_id=$cidade_id AND a.estado=1 AND (a.id NOT IN (SELECT agente_origem FROM ligacao WHERE agente_destino=$user_id) AND a.id NOT IN (SELECT agente_destino FROM ligacao WHERE agente_origem=$user_id))"))
             ], 200)->header('Content-Type', 'application/json');
         }
 
@@ -134,7 +141,11 @@ class AgenteController extends Controller
             $ligacao->agente_origem = $request->agente_origem;
             $ligacao->agente_destino = $request->agente_destino;
             if($request->tipo == 'Organizacional'){
+                $ligacao->is_aceito = 1;
                 $ligacao->estado = 1;
+            }else{
+                $ligacao->is_aceito = 0;
+                $ligacao->estado = 0;
             }
             $ligacao->save();
 
@@ -154,7 +165,7 @@ class AgenteController extends Controller
             $user_id = Crypt::decrypt($request->token);
 
             return response()->json([
-                'agente' => DB::select(DB::raw("SELECT id, nome_completo, username, foto_perfil, tipo FROM agente WHERE id<>$user_id AND id IN (SELECT agente_origem FROM ligacao WHERE estado=0)"))
+                'agente' => DB::select(DB::raw("SELECT a.id, a.nome_completo, a.username, a.foto_perfil, a.tipo, l.agente_origem, l.agente_destino, l.estado, l.is_aceito FROM agente a, ligacao l WHERE a.id=l.agente_origem AND l.agente_destino=$user_id AND l.estado=0 AND l.is_aceito=0"))
             ], 200)->header('Content-Type', 'application/json');
         }
 
@@ -163,4 +174,46 @@ class AgenteController extends Controller
         ], 200)->header('Content-Type', 'application/json');
     }
 
+    public function mudarLigacao(Request $request)
+    {
+        if (!empty($request->all())) {
+            $estado = $request->estado;
+            $user_id = $request->user_id;
+            $agente_origem = $request->agente_origem;
+
+            if($estado == 1){
+                DB::table('ligacao')->where('agente_origem', $agente_origem)->where('agente_destino', $user_id)->update([
+                    'estado' => true,
+                    'is_aceito' => true
+                ]);
+            }else{
+                DB::table('ligacao')->where('agente_origem', $agente_origem)->where('agente_destino', $user_id)->update([
+                    'estado' => true
+                ]);
+            }
+
+            return response()->json([
+                'code' => 200
+            ], 200)->header('Content-Type', 'application/json');
+        }
+
+        return response()->json([
+            'code' => 401
+        ], 200)->header('Content-Type', 'application/json');
+    }
+
+    public function listarLigacao(Request $request)
+    {
+        if (!empty($request->all())) {
+            $user_id = Crypt::decrypt($request->token);
+
+            return response()->json([
+                'agente' => DB::select(DB::raw("SELECT a.id, a.nome_completo, a.username, a.foto_perfil, a.tipo, l.agente_origem, l.agente_destino, l.estado, l.is_aceito, ae.estado AS is_online FROM agente a, ligacao l, agente_estado ae WHERE a.id=l.agente_origem AND l.agente_destino=$user_id AND ae.agente_id=a.id AND l.estado=1 AND l.is_aceito=1"))
+            ], 200)->header('Content-Type', 'application/json');
+        }
+
+        return response()->json([
+            'code' => 401
+        ], 200)->header('Content-Type', 'application/json');
+    }
 }
